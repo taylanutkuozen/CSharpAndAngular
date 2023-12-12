@@ -5,9 +5,17 @@ using DataAccess.Concrete.InMemory;
 //Open Closed Principle
 //Data Transformation Object=DTO
 ProductManager productManager = new ProductManager(new EfProductDal());
-foreach (var product in productManager.GetProductDetail())
+var result = productManager.GetProductDetail();
+if(result.Success==true)
 {
-    Console.WriteLine(product.ProductName + " / " + product.CategoryName);
+    foreach (var product in result.Data)
+    {
+        Console.WriteLine(product.ProductName + " / " + product.CategoryName);
+    }
+}
+else
+{
+    Console.WriteLine(result.Message);
 }
 Console.WriteLine("----------");
 CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
@@ -16,17 +24,17 @@ foreach (var category in categoryManager.GetAll())
     Console.WriteLine(category.CategoryName);
 }
 Console.WriteLine("-----------------------");
-foreach (var product in productManager.GetAll())    
+foreach (var product in productManager.GetAll().Data)    
 {
     Console.WriteLine(product.ProductName);
 }
 Console.WriteLine("----------");
-foreach(var product in productManager.GetAllByCategoryId(5))
+foreach(var product in productManager.GetAllByCategoryId(5).Data)
 {
     Console.WriteLine(product.ProductName);
 }
 Console.WriteLine("----------");
-foreach (var product in productManager.GetByUnitPrice(50,100))
+foreach (var product in productManager.GetByUnitPrice(50, 100).Data)
 {
     Console.WriteLine(product.ProductName);
 }
